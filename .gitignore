@@ -1,0 +1,77 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+logs/
+*.log
+
+# Cache
+.cache/
+.pytest_cache/
+.mypy_cache/
+
+# Local data
+data_cache/
+memory_db/
+checkpoints/
+adapters/
+models/
+optimization_results/
+evolution_data/
+benchmark_results/
+
+# Personal files
+*.txt.bak
+error_log.txt
+pip_install_log.txt
+test_output.txt
+test_results.txt
+test_results_direct.txt
+
+# Audio/Video test files
+test_audio.mp3
+
+# Large model files
+*.pt
+*.onnx
+*.engine
+*.trt
+
+# Environment files
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db

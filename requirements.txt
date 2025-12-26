@@ -1,0 +1,65 @@
+# DERIN v20.0 - Python Dependencies
+# ====================================
+
+# Core ML/AI
+torch>=2.1.0
+transformers>=4.35.0
+accelerate>=0.24.0
+bitsandbytes>=0.41.0
+peft>=0.6.0
+
+# TensorRT (NVIDIA Jetson)
+# Install via: pip install tensorrt_llm --extra-index-url https://pypi.nvidia.com
+# tensorrt-llm>=0.5.0
+
+# Vector Database
+chromadb>=0.4.15
+sentence-transformers>=2.2.2
+
+# Perception
+opencv-python>=4.8.0
+ultralytics>=8.0.0  # YOLOv8
+deepface>=0.0.79
+Pillow>=10.0.0
+
+# Audio
+pyaudio>=0.2.13
+soundfile>=0.12.1
+librosa>=0.10.0
+TTS>=0.18.0  # XTTS
+
+# Speech Recognition
+faster-whisper>=0.9.0
+# speechbrain>=0.5.15  # Optional for speaker verification
+
+# News & Web
+feedparser>=6.0.10
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+
+# System
+psutil>=5.9.0
+colorama>=0.4.6
+python-dotenv>=1.0.0
+
+# Serialization
+pyyaml>=6.0
+jsonschema>=4.19.0
+
+# Date/Time
+python-dateutil>=2.8.2
+pytz>=2023.3
+
+# Development
+pytest>=7.4.0
+black>=23.0.0
+flake8>=6.1.0
+mypy>=1.5.0
+
+# Optional: Robotics
+# pyserial>=3.5  # For Arduino/servo control
+# adafruit-circuitpython-pca9685>=3.4.0  # For servo driver
+
+# Optional: Advanced
+# faiss-gpu>=1.7.2  # Alternative to ChromaDB
+# onnxruntime-gpu>=1.16.0  # ONNX runtime

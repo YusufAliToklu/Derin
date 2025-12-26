@@ -1,0 +1,347 @@
+# Derin AI System Configuration
+# =================================
+# Merkezi configuration dosyası - tüm sistem ayarları
+# Version: 1.0.0
+# Last Updated: 2024-12-16
+
+# ============================================
+# SYSTEM SETTINGS
+# ============================================
+system:
+  name: "Derin"
+  version: "2.0.0"
+  platform: "auto"  # auto, laptop, jetson_agx_orin, jetson_orin_nx
+  debug: false
+  log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  
+  # Hardware-adaptive features
+  # Features auto-enable/disable based on detected hardware
+  adaptive_features:
+    enabled: true
+    min_vram_for_vision: 32000    # 32GB - Full vision only on powerful hardware
+    min_vram_for_vlm: 16000       # 16GB - VLM requires significant VRAM
+    min_vram_for_face_rec: 6000   # 6GB - DeepFace is lightweight, works on RTX 4060
+
+# ============================================
+# MODEL CONFIGURATION
+# ============================================
+model:
+  # Primary model settings
+  primary:
+    name: "Qwen/Qwen2.5-3B-Instruct"
+    quantization: "4bit"  # 4bit, 8bit, none
+    max_tokens: 2048
+    temperature: 0.7
+    top_p: 0.9
+    top_k: 50
+    repetition_penalty: 1.1
+  
+  # VLM (Vision Language Model)
+  vlm:
+    name: "Qwen/Qwen2-VL-2B-Instruct"
+    enabled: "auto"  # auto, true, false - auto enables on 32GB+ systems
+    max_image_size: 1024
+  
+  # Embedding model
+  embedding:
+    name: "all-MiniLM-L6-v2"
+    dimension: 384
+
+# ============================================
+# MEMORY SETTINGS
+# ============================================
+memory:
+  # Long-term memory
+  long_term:
+    max_entries: 10000
+    importance_threshold: 0.3
+    prune_percentage: 0.2
+    archive_threshold_days: 30
+  
+  # Vector memory (ChromaDB)
+  vector:
+    persist_directory: "data/vector_store"
+    collection_name: "derin_memories"
+    min_similarity_score: 0.3
+    max_results: 10
+  
+  # Working memory
+  working:
+    max_context_tokens: 4096
+    summary_threshold: 0.7
+
+# ============================================
+# PERSONALITY & EMOTIONS
+# ============================================
+personality:
+  # Default personality mode
+  default_mode: "CASE"  # CASE, TARS, MARVIN
+  
+  # Emotion settings
+  emotions:
+    mood_baseline: 0.6
+    energy_baseline: 1.0
+    energy_min: 0.3
+    decay_rate: 0.05
+    td_learning_rate: 0.1  # TD Formula α
+    td_discount: 0.95      # TD Formula γ
+  
+  # TARS personality
+  tars:
+    humor_level: 0.75
+    honesty_level: 0.95
+    sarcasm_level: 0.6
+  
+  # Response style
+  response:
+    default_length: "medium"  # short, medium, long
+    formality: 0.5
+    emoji_usage: 0.3
+
+# ============================================
+# CONSCIOUSNESS ENGINE
+# ============================================
+consciousness:
+  # Background processing
+  background:
+    enabled: true
+    interval_seconds: 30
+    max_thoughts: 5
+  
+  # Mind wandering
+  wandering:
+    probability: 0.3
+    creativity_boost: 0.2
+  
+  # Attention
+  attention:
+    decay_rate: 0.1
+    focus_threshold: 0.5
+
+# ============================================
+# ADVANCED BEHAVIOR (10/10 Realism)
+# ============================================
+behavior:
+  # Micro-expressions
+  micro_expressions:
+    enabled: true
+    probability: 0.3
+  
+  # Fatigue modeling
+  fatigue:
+    enabled: true
+    physical_decay_rate: 0.02
+    mental_decay_rate: 0.03
+    exhaustion_threshold: 0.8
+    sleep_recovery_rate: 0.15
+  
+  # Relationship memory
+  relationships:
+    trust_baseline: 0.5
+    affection_baseline: 0.5
+    familiarity_growth_rate: 0.1
+  
+  # Mood inertia
+  mood_inertia:
+    factor: 0.7
+    transition_speed: 0.1
+
+# ============================================
+# AUTONOMOUS CURIOSITY
+# ============================================
+curiosity:
+  enabled: true
+  idle_threshold_seconds: 300
+  max_research_per_session: 5
+  research_interval_seconds: 60
+  surprise_threshold: 0.7
+
+# ============================================
+# VOICE SETTINGS
+# ============================================
+voice:
+  # TTS (Text-to-Speech)
+  tts:
+    engine: "xtts"  # xtts, gtts
+    default_voice: "derin_default"
+    speed: 1.0
+    pitch: 1.0
+  
+  # STT (Speech-to-Text)
+  stt:
+    engine: "whisper"
+    model: "base"
+    language: "tr"
+  
+  # Audio
+  audio:
+    sample_rate: 22050
+    channels: 1
+
+# ============================================
+# VISION SETTINGS
+# ============================================
+vision:
+  # Master switch - "auto" enables based on hardware
+  enabled: "auto"  # auto, true, false
+  
+  # Camera
+  camera:
+    enabled: "auto"  # auto enables on Jetson, disabled on laptop
+    device_id: 0
+    resolution: [1280, 720]
+    fps: 30
+  
+  # Object detection
+  detection:
+    model: "yolov8n"
+    confidence_threshold: 0.5
+    nms_threshold: 0.4
+  
+  # Face recognition (DeepFace)
+  face:
+    enabled: "auto"  # auto enables on 32GB+ systems
+    recognition_threshold: 0.6
+    
+  # VLM Scene Understanding
+  vlm:
+    enabled: "auto"  # auto enables on 32GB+ systems
+    model: "Qwen/Qwen2-VL-2B-Instruct-AWQ"
+
+# ============================================
+# PLATFORM PROFILES (Auto-detected)
+# ============================================
+platform_profiles:
+  # Laptop RTX 4060 8GB - Development only
+  laptop:
+    vram_mb: 8000
+    features:
+      vision: false       
+      vlm: false          
+      face_recognition: true   
+      voice: true
+      consciousness: true
+      tensorrt: false  # FAZ 17
+      thermal_management: false  # FAZ 19
+    model:
+      llm: "Qwen/Qwen2.5-3B-Instruct"
+      quantization: "4bit"
+      max_context: 2048
+    hierarchical_brain:
+      layers: ["reflex", "social"]
+      default_layer: "social"
+  
+  # FAZ 22: NVIDIA Jetson AGX Thor 128GB - FULL PRODUCTION
+  thor:
+    vram_mb: 128000
+    features:
+      vision: true
+      vlm: true
+      face_recognition: true
+      voice: true
+      consciousness: true
+      tensorrt: true  # FAZ 17: TensorRT-LLM
+      thermal_management: true  # FAZ 19: Termal izleme
+      dla_offload: true  # Vision DLA'da çalışır
+      night_optimization: true  # Gece optimizasyonu
+    model:
+      # 5 Layer Hierarchy - Tümü eşzamanlı aktif
+      reflex: "Qwen/Qwen2.5-3B-Instruct"
+      social: "Qwen/Qwen2.5-8B-Instruct"
+      social_plus: "Qwen/Qwen2.5-14B-Instruct"
+      cortical: "Qwen/Qwen2.5-72B-Instruct-AWQ"
+      coder: "mistralai/Devstral-Small-2505"
+      quantization: "awq"  # AWQ for 70B
+      max_context: 8192
+    hierarchical_brain:
+      layers: ["reflex", "social", "social_plus", "cortical", "coder"]
+      default_layer: "social"
+      supervisor_layer: "cortical"  # 70B Ana Abi
+    vram_budget:
+      reflex_gb: 3
+      social_gb: 6
+      social_plus_gb: 10
+      cortical_gb: 45
+      coder_gb: 15
+      vision_gb: 10
+      total_gb: 89
+      buffer_gb: 39  # 128 - 89 = 39GB buffer
+    thermal:
+      warning_temp: 75
+      critical_temp: 85
+      emergency_temp: 95
+    tensorrt:
+      engine_dir: "/models/tensorrt"
+      use_int8: true
+      use_speculative_decoding: true
+
+
+# ============================================
+# SAFETY CONSTRAINTS
+# ============================================
+safety:
+  # Content filtering
+  content:
+    enabled: true
+    block_harmful: true
+    block_explicit: true
+  
+  # Rate limiting
+  rate_limit:
+    max_requests_per_minute: 60
+    max_tokens_per_request: 4096
+  
+  # Self-modification
+  self_modification:
+    allowed: false
+    approved_modules: ["personality", "response_style"]
+
+# ============================================
+# SCHEDULING & PERFORMANCE
+# ============================================
+scheduling:
+  # Time slicing
+  time_slice:
+    default_ms: 100
+    max_ms: 500
+  
+  # Resource limits
+  resources:
+    max_memory_mb: 8192
+    max_cpu_percent: 80
+    gpu_memory_fraction: 0.8
+  
+  # Background tasks
+  background:
+    dream_mode_interval_hours: 6
+    memory_prune_interval_hours: 24
+    self_evaluation_interval_hours: 12
+
+# ============================================
+# PATHS & DIRECTORIES
+# ============================================
+paths:
+  memory_dir: "./memory"
+  models_dir: "./models"
+  logs_dir: "./logs"
+  data_dir: "./data"
+  checkpoints_dir: "./checkpoints"
+  voice_profiles_dir: "./voice/profiles"
+
+# ============================================
+# TELEGRAM BOT
+# ============================================
+telegram:
+  enabled: false
+  # token: "YOUR_BOT_TOKEN"  # Set via environment variable
+  allowed_users: []
+  notification_on_startup: true
+
+# ============================================
+# DEVELOPMENT & DEBUGGING
+# ============================================
+development:
+  hot_reload: false
+  profile_performance: false
+  save_conversation_logs: true
+  verbose_errors: true
